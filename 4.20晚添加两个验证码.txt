@@ -1,0 +1,715 @@
+<?php // Template Name: submit
+get_header();
+if (True === apply_filters('graduate_filter_frontpage_content_enable', true)) :
+global $wpdb;
+$num = 1;
+if (isset($_POST['submit'])) {
+$hcaptcha_secret_key = '0xfC0436A04C39D94998Ce3655b3760F46698c45d6'; // 私钥 
+$hcaptcha_response = sanitize_text_field($_POST['h-captcha-response']);
+$response = wp_remote_post('https://hcaptcha.com/siteverify', array('body' => array('secret' => $hcaptcha_secret_key, 'response' => $hcaptcha_response)));
+$response_body = json_decode(wp_remote_retrieve_body($response));
+if ($response_body->success) {
+$num = 2;
+} else {
+echo "验证码输入错误，请重新输入！<br>";
+}
+}
+?>
+
+<?php if ($num == 1) : ?>
+<form method="post">
+<div class="h-captcha" data-sitekey="a784c10d-6304-4d2e-8d7c-7b5bdf2382f7"></div>
+<input type="submit" name="submit" value="验证">
+</form>
+<script src="https://hcaptcha.com/1/api.js" async defer></script>
+<?php endif; ?> <?php if ($num == 2) : ?>
+<div style="text-align:center;">
+<div id="primary">
+<main id="main" role="main">
+<h1><br><br>个人基本信息<span style="text-align: center"></span></h1>
+<form role="form" method="post" id="myForm"><br>
+<table width="750" border="1" align="center" cellpadding="1" cellspacing="0">
+性别： <label>男<input id="gender" type="radio" name="gender" value="11" required></label>
+<label>女<input id="gender" type="radio" name="gender" value="22"></label><br><br>
+学号后三位<select id="xuehao"></select></td><br><br>
+<label for="email">电子邮件地址：</label><input type="email" id="email" name="email" required>
+(为保护隐私，不建议填写QQ邮箱和名字缩写的邮箱) <br><br>
+<tbody>
+<tr>
+<th scope="col">自己信息</th>
+<th scope="col">期望对方信息</th>
+<th scope="col">备注</th>
+</tr>
+<tr>
+<td>自己身高：<select id="W1_my_height" name="W1_my_height"></select></td>
+<td>希望对方身高：<select id="W1_your_height" name="W1_your_height"></select><br>
+误差约在<select id="W1_height_error" name="W1_height_error">以内</td>
+<th scope="row"></th>
+</tr>
+<tr>
+<td>自己体重：<select id="W1_my_weight" name="W1_my_weight"></select></td>
+<td>希望对方体重：<select id="W1_your_weight" name="W1_your_weight"></select><br>
+误差约在：<select id="W1_weight_error" name="W1_weight_error">以内</td>
+<th scope="row"></th>
+</tr>
+<tr>
+
+<td>所学的学科：<label>
+<select id="W1_my_course" name="W1_my_course">
+<option value="51">哲学</option>
+<option value="52">经济学</option>
+<option value="53">法学</option>
+<option value="54">教育学</option>
+<option value="55">文学</option>
+<option value="56">历史学</option>
+<option value="57">理学</option>
+<option value="58">工学</option>
+<option value="59">农学</option>
+<option value="60">医学</option>
+<option value="61">军事学</option>
+<option value="62">管理学</option>
+<option value="63">艺术学</option>
+</select></label></td>
+<td>希望对方的学科：<br>
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="51">哲学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="52">经济学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="53">法学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="54">教育学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="55">文学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="56">历史学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="57">理学<br>
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="58">工学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="59">农学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="60">医学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="61">军事学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="62">管理学
+<input type="checkbox" id="W1_your_course[]" name="W1_your_course[]" value="63">艺术学
+</td>
+</td>
+<th scope="row"></th>
+</tr>
+<tr>
+
+<td>所在年级：<label>
+<select id="W1_my_grade" name="W1_my_grade">
+<option value="11">大一</option>
+<option value="12">大二</option>
+<option value="13">大三</option>
+<option value="14">大四</option>
+<option value="15">本科毕业</option>
+<option value="16">研一</option>
+<option value="17">研二</option>
+<option value="18">研三</option>
+<option value="19">硕士毕业</option>
+<option value="20">博一</option>
+<option value="21">博二</option>
+<option value="22">博三</option>
+<option value="23">博四</option>
+<option value="24">博士毕业</option>
+</select></label></td>
+<td>希望对方的年级：<br>
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="11">大一
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="12">大二
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="13">大三
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="14">大四
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="15">本科毕业<br>
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="16">硕一
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="17">硕二
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="18">硕三
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="19">硕士毕业<br>
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="20">博一
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="21">博二
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="22">博三
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="23">博四
+<input type="checkbox" id="W1_your_grade[]" name="W1_your_grade[]" value="24">博士毕业<br>
+</td>
+<th scope="row"></th>
+</tr>
+
+<tr>
+<td>出生年份：<select id="W1_my_birth" name="W1_my_birth"></select></td>
+<td>希望对方出生年份：<select id="W1_your_birth" name="W1_your_birth"></select><br>
+年龄上下误差在<select id="W1_birth_error" name="W1_birth_error">之内</td>
+<th scope="row"></th>
+</tr>
+<tr>
+
+<td>自己星座：
+<label>
+<select name="W1_my_constellation" name="W1_my_constellation">
+<option value="71">白羊座</option>
+<option value="72">金牛座</option>
+<option value="73">双子座</option>
+<option value="74">巨蟹座</option>
+<option value="75">狮子座</option>
+<option value="76">处女座</option>
+<option value="77">天秤座</option>
+<option value="78">天蝎座</option>
+<option value="79">射手座</option>
+<option value="80">摩羯座</option>
+<option value="81">水瓶座</option>
+<option value="82">双鱼座</option>
+</select></label>
+</td>
+<td>希望对方星座：<br>
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="71">白羊座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="72">金牛座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="73">双子座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="74">巨蟹座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="75">狮子座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="76">处女座<br>
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="77">天秤座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="78">天蝎座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="79">射手座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="80">摩羯座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="81">水瓶座
+<input type="checkbox" name="W1_your_constellation[]" name="W1_your_constellation[]" value="82">双鱼座
+</td>
+<th scope="row"></th>
+</tr>
+<tr>
+<td>自己老家位于：<br>东经<select id="W1_my_longitude" name="W1_my_longitude"></select><br>
+北纬<select id="W1_my_dimension" name="W1_my_dimension"></select></td>
+<td>希望对方距离你：<select id="W1_distance" name="W1_distance"></select>公里以内</td>
+<th scope="row"></th>
+</tr>
+<tr>
+<td>你现居住地位于：<br>东经<select id="W1_my_longitude_now" name="W1_my_longitude_now"></select><br>
+北纬<select id="W1_my_dimension_now" name="W1_my_dimension_now"></select></td>
+<td>希望对方距离你：<select id="W1_distance_now" name="W1_distance_now"></select>公里以内</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h1><br><br>爱好类的权重</h1>
+<input type="range" id="W2_total" name="W2_total" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+<table width="750" border="1" align="center" cellpadding="1" cellspacing="0">
+<tbody>
+<tr>
+<th scope="col">权重</th>
+<th scope="col">自己信息</th>
+<th scope="col"> 期望对方信息</th>
+<th scope="col">备注</th>
+</tr>
+<tr>
+<th>做饭 权重
+<input type="range" id="W2_cool" name="W2_cool" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>累计做饭的次数：<select id="W2_my_cool" name="W2_my_cool"></select></td>
+<td align="center">累计做饭的次数：<select id="W2_your_cool" name="W2_your_cool"></select></td>
+<td></td>
+</tr>
+<tr>
+<th>运动 权重
+<input type="range" id="W2_sport" name="W2_sport" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>每周运动时间在周围人群中约排在：<input type="range" id="W2_my_sport" name="W2_my_sport" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>每周运动时间在周围人群中约排在：<input type="range" id="W2_your_sport" name="W2_your_sport" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td> 体育类爱好：包括跑步、游泳、健身、篮球、足球等等</td>
+</tr>
+<tr>
+<th>读书 权重
+<input type="range" id="W2_read" name="W2_read" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>每周读书时间在周围人群中约排在：<input type="range" id="W2_my_read" name="W2_my_read" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>每周读书时间在周围人群中约排在：<input type="range" id="W2_your_read" name="W2_your_read" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>看书类爱好：包括小说、传记、历史、科学、散文等等</td>
+</tr>
+<tr>
+<th>游戏类 权重
+<input type="range" id="W2_game" name="W2_game" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>游戏成绩人群中约排在：<input type="range" id="W2_my_game" name="W2_my_game" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>游戏成绩人群中约排在：<input type="range" id="W2_your_game" name="W2_your_game" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>游戏类爱好：包括各种手游、端游</td>
+</tr>
+<tr>
+<th>娱乐类 权重
+<input type="range" id="W2_sing" name="W2_sing" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>该成绩人群中约排在：<input type="range" id="W2_my_sing" name="W2_my_sing" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>该戏成绩人群中约排在：<input type="range" id="W2_your_sing" name="W2_your_sing" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>唱歌跳舞乐器、卡拉OK、电影、音乐会、演唱会、游乐场等等</td>
+</tr>
+<tr>
+<th>漫画二次元类权重
+<input type="range" id="W2_cartoon" name="W2_cartoon" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_cartoon" name="W2_my_cartoon" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_cartoon" name="W2_your_cartoon" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>漫画二次元类</td>
+</tr>
+<tr>
+<th>旅游类 权重
+<input type="range" id="W2_travel" name="W2_travel" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_travel" name="W2_my_travel" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_travel" name="W2_your_travel" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>旅游类爱好：包括探险、观光、登山、露营、摄影、游艺类</td>
+</tr>
+<tr>
+<th>公益类 权重
+<input type="range" id="W2_public" name="W2_public" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_public" name="W2_my_public" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_public" name="W2_your_public" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>社会公益类爱好：包括志愿者活动、慈善事业、社区服务等等</td>
+</tr>
+<tr>
+<th>传统技艺类 权重
+<input type="range" id="W2_tradition" name="W2_tradition" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_tradition" name="W2_my_tradition" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_tradition" name="W2_your_tradition" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>传统技艺类爱好：包括中国绘画、中国书法、剪纸、中国结等等</td>
+</tr>
+<tr>
+<th>摄影类 权重
+<input type="range" id="W2_shoot" name="W2_shoot" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_shoot" name="W2_my_shoot" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_shoot" name="W2_your_shoot" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>摄影类爱好：包括风景摄影、人像摄影、动物摄影、黑白摄影等等</td>
+</tr>
+<tr>
+<th> 艺术类 权重
+<input type="range" id="W2_art" name="W2_art" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_art" name="W2_my_art" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_art" name="W2_your_art" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>艺术类爱好：包括绘画、音乐、舞蹈、表演、写作等等</td>
+</tr>
+<tr>
+<th>社交类 权重
+<input type="range" id="W2_socialize" name="W2_socialize" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_socialize" name="W2_my_socialize" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_socialize" name="W2_your_socialize" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>社交类爱好：包括参加社交活动、组织聚会、结交新朋友等等</td>
+</tr>
+<tr>
+<th>科技类 权重
+<input type="range" id="W2_technology" name="W2_technology" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_technology" name="W2_my_technology" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_technology" name="W2_your_technology" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>科技类爱好：包括编程、网络安全、机器人制作、数学、谜题、智力游戏、思维训练等等、包括数学</td>
+</tr>
+<tr>
+<th>手工艺类 权重
+<input type="range" id="W2_handicraft" name="W2_handicraft" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_handicraft" name="W2_my_handicraft" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_handicraft" name="W2_your_handicraft" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>手工艺类爱好：包括织毛衣、编织、陶艺、雕刻、缝纫等等</td>
+</tr>
+<tr>
+<th>收藏类 权重
+<input type="range" id="W2_collect" name="W2_collect" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_my_collect" name="W2_my_collect" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对该项目喜欢的程度在人群中约排在：<input type="range" id="W2_your_collect" name="W2_your_collect" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>收藏类爱好：包括收藏玩具、拼装模型、收藏娃娃，收藏邮票、硬币、纪念品、艺术品等等</td>
+</tr>
+</tbody>
+</table>
+<br><br><br><br>
+
+<h1><br> 个人趋向类的权重</h1>
+<input type="range" id="W3_total" name="W3_total" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+<table width="750" border="1" align="center" cellpadding="1" cellspacing="0">
+<tbody>
+<tr>
+<th scope="col">权重</th>
+<th scope="col">自己信息</th>
+<th scope="col">期望对方信息</th>
+<th scope="col">备注</th>
+</tr>
+<tr>
+<th scope="row">权重<input type="range" id="W3_music" name="W3_music" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>喜欢西方乐器 - 东方乐器<br><input type="range" id="W3_my_music" name="W3_my_music" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>喜欢西方乐器 东方乐器<br><input type="range" id="W3_your_music" name="W3_your_music" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>西方乐器：钢琴、小提琴、吉他等<br>本地乐器：洞箫、笛子、二胡、古筝等</td>
+</tr>
+<tr>
+<th>权重<input type="range" id="W3_animal" name="W3_animal" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对猫狗的喜好程度<br>厌恶、非常喜欢<br><input type="range" id="W3_my_animal" name="W3_my_animal" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对猫狗的喜好程度 厌恶、非常喜欢<br><input type="range" id="W3_your_animal" name="W3_your_animal" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+<tr>
+<th>权重<input type="range" id="W3_help" name="W3_help" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>陌生人遇到困难，自己去帮助的概率：<br><input type="range" id="W3_my_help" name="W3_my_help" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>陌生人遇到困难，希望对方去帮助的概率：<br><input type="range" id="W3_your_help" name="W3_your_help" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+<tr>
+<th>权重<input type="range" id="W3_initiative" name="W3_initiative" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>在交往中，你主动的程度：<br><input type="range" id="W3_my_initiative" name="W3_my_initiative" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>在交往中，你希望对方程度：<br><input type="range" id="W3_your_initiative" name="W3_your_initiative" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+<tr>
+<th>权重<input type="range" id="W3_money" name="W3_money" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>如果你每个月有100个单位的工资，到月底你希望还有多少：<br><input type="range" id="W3_my_money" name="W3_my_money" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>如果你每个月有100个单位的工资，到月底你希望对方还有多少：<br><input type="range" id="W3_your_money" name="W3_your_money" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+<tr>
+<th>权重<input type="range" id="W3_pay" name="W3_pay" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>在交往中，你希望承担总费用的多少比例：<br><input type="range" id="W3_my_pay" name="W3_my_pay" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>在交往中，你希望承担总费用的多少比例：<br><input type="range" id="W3_your_pay" name="W3_your_pay" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+<tr>
+<th>权重<input type="range" id="W3_home" name="W3_home" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>如果有100单位时间回家过年，你希望有多少时间回自己家：<br><input type="range" id="W3_my_home" name="W3_my_home" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>如果有100单位时间回家过年，你希望有多少时间回自己家：<br><input type="range" id="W3_your_home" name="W3_your_home" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<h1><br> 个人性格类的权重</h1>
+<input type="range" id="W4_total" name="W4_total" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+<table width="750" border="1" align="center" cellpadding="1" cellspacing="0">
+<tbody>
+<tr>
+<th scope="col">该项权重</th>
+<th scope="col">自己性格</th>
+<th scope="col">期望对方性格</th>
+<th scope="col">备注</th>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_stablize" name="W4_stablize" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>自己情绪温度的程度：<br><input type="range" id="W4_my_stablize" name="W4_my_stablize" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对方情绪温度的程度：<br><input type="range" id="W4_your_stablize" name="W4_your_stablize" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_fast" name="W4_fast" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>急性子 - 慢性子<br><input type="range" id="W4_my_fast" name="W4_my_fast" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>急性子 - 慢性子<br><input type="range" id="W4_your_fast" name="W4_your_fast" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_reason" name="W4_reason" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>理性 - 感性<br><input type="range" id="W4_my_reason" name="W4_my_reason" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>理性 - 感性<br><input type="range" id="W4_your_reason" name="W4_your_reason" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_outgoing" name="W4_outgoing" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>外向型 - 内向型<br><input type="range" id="W4_my_outgoing" name="W4_my_outgoing" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>外向型 - 内向型<br><input type="range" id="W4_your_outgoing" name="W4_your_outgoing" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_career" name="W4_career" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>事业型 - 家庭型<br><input type="range" id="W4_my_career" name="W4_my_career" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>事业型 - 家庭型<br><input type="range" id="W4_your_career" name="W4_your_career" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_optimistic" name="W4_optimistic" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>乐观型 - 悲观型<br><input type="range" id="W4_my_optimistic" name="W4_my_optimistic" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>乐观型 - 悲观型<br><input type="range" id="W4_your_optimistic" name="W4_your_optimistic" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_independent" name="W4_independent" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>事业型 - 家庭型<br><input type="range" id="W4_my_independent" name="W4_my_independent" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>事业型 - 家庭型<br><input type="range" id="W4_your_independent" name="W4_your_independent" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_perfect" name="W4_perfect" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>完美主义型 - 灵活实用型<br><input type="range" id="W4_my_perfect" name="W4_my_perfect" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>完美主义型 - 灵活实用型<br><input type="range" id="W4_your_perfect" name="W4_your_perfect" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_share" name="W4_share" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>分享型 - 保有型<br><input type="range" id="W4_my_share" name="W4_my_share" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>分享型 - 保有型<br><input type="range" id="W4_your_share" name="W4_your_share" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_control" name="W4_control" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>操控型 - 顺从型<br><input type="range" id="W4_my_control" name="W4_my_control" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>操控型 - 顺从型<br><input type="range" id="W4_your_control" name="W4_your_control" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_sensitive" name="W4_sensitive" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对事物的敏感程度<br><input type="range" id="W4_my_sensitive" name="W4_my_sensitive" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对事物的敏感程度<br><input type="range" id="W4_your_sensitive" name="W4_your_sensitive" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_rely" name="W4_rely" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对对方的依赖程度<br><input type="range" id="W4_my_rely" name="W4_my_rely" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对对方的依赖程度<br><input type="range" id="W4_your_rely" name="W4_your_rely" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<th>该项权重<br><input type="range" id="W4_romantic" name="W4_romantic" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对仪式/浪漫要求程度<br><input type="range" id="W4_my_romantic" name="W4_my_romantic" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td>对仪式/浪漫要求程度<br><input type="range" id="W4_your_romantic" name="W4_your_romantic" min="0" max="100" step="5" value="0" class="range-input">
+<p><span class="range-value"></span></p>
+</td>
+<td></td>
+</tr>
+
+</tbody>
+</table>
+<br><br>
+请再检查一次，尤其是权重这一项<br>
+<br><br>
+
+<div class="h-captcha" data-sitekey="a784c10d-6304-4d2e-8d7c-7b5bdf2382f7"></div>
+<input type="submit" value="提交表单" name="submitbtn" placeholder="提交表单">
+
+
+</form>
+</main>
+</div>
+</div>
+<script>
+const rangeInputs = document.querySelectorAll('.range-input');
+rangeInputs.forEach(function(rangeInput, i) {
+const rangeValue = document.querySelectorAll('.range-value')[i];
+rangeInput.addEventListener('input', function() {
+rangeValue.textContent = rangeInput.value;
+});
+});
+var select = document.getElementById("xuehao");for (var i = 0; i <= 999; i++) {var option = document.createElement("option");option.text = i + "";option.value = i;select.add(option);}
+var select = document.getElementById("W1_my_height");for (var i = 0; i <= 300; i++) {var option = document.createElement("option");option.text = i + "厘米";option.value = i;select.add(option);}
+var select = document.getElementById("W1_your_height");for (var i = 0; i <= 300; i++) {var option = document.createElement("option");option.text = i + "厘米";option.value = i;select.add(option);}
+var select = document.getElementById("W1_height_error");for (var i = 0; i <= 30; i++) {var option = document.createElement("option");option.text = i + "厘米";option.value = i;select.add(option);}
+var select = document.getElementById("W1_my_weight");for (var i = 0; i <= 300; i++) {var option = document.createElement("option");option.text = i + "斤";option.value = i;select.add(option);}
+var select = document.getElementById("W1_your_weight");for (var i = 0; i <= 300; i++) {var option = document.createElement("option");option.text = i + "斤";option.value = i;select.add(option);}
+var select = document.getElementById("W1_weight_error");for (var i = 0; i <= 30; i++) {var option = document.createElement("option");option.text = i + "斤";option.value = i;select.add(option);}
+var select = document.getElementById("W1_my_birth");for (var i = 1970; i <= 2020; i++) {var option = document.createElement("option");option.text = i + "年";option.value = i;select.add(option);}
+var select = document.getElementById("W1_your_birth");for (var i = 1970; i <= 2020; i++) {var option = document.createElement("option");option.text = i + "年";option.value = i;select.add(option);}
+var select = document.getElementById("W1_birth_error");for (var i = 0; i <= 10; i++) {var option = document.createElement("option");option.text = i + "岁";option.value = i;select.add(option);}
+var select = document.getElementById("W1_my_longitude");for (var i = 730; i <= 1350; i++) {var option = document.createElement("option");option.text = (i / 10) + "°";option.value = (i / 10);select.add(option);}
+var select = document.getElementById("W1_my_longitude_now");for (var i = 730; i <= 1350; i++) {var option = document.createElement("option");option.text = (i / 10) + "°";option.value = (i / 10);select.add(option);}
+var select = document.getElementById("W1_my_dimension");for (var i = 30; i <= 540; i++) {var option = document.createElement("option");option.text = (i / 10) + "°";option.value = (i / 10);select.add(option);}
+var select = document.getElementById("W1_my_dimension_now");for (var i = 30; i <= 540; i++) {var option = document.createElement("option");option.text = (i / 10) + "°";option.value = (i / 10);select.add(option);}
+var select = document.getElementById("W1_distance");for (var i = 0; i <= 1000; i=i+10) {  var option = document.createElement("option");  option.text = i;  option.value = i;  select.add(option);}
+var select = document.getElementById("W1_distance_now");for (var i = 0; i <= 1000; i=i+10) {  var option = document.createElement("option");  option.text = i;  option.value = i;  select.add(option);}
+var select = document.getElementById("W2_my_cool");for (var i = 0; i <= 1000; i=i+100) {  var option = document.createElement("option");  option.text = i;  option.value = (i/10);  select.add(option);}
+var select = document.getElementById("W2_your_cool");for (var i = 0; i <= 1000; i=i+100) {  var option = document.createElement("option");  option.text = i;  option.value = (i/10);  select.add(option);}
+
+</script>
+<script src="https://hcaptcha.com/1/api.js" async defer></script>
+<?php endif;
+?> <?php endif;
+get_footer(); ?>
